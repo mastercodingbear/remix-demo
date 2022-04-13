@@ -1,0 +1,5 @@
+@import '~antd/dist/antd.css';
+
+.test {
+  color: red;
+}
