@@ -1,8 +1,9 @@
 
 
-import { Outlet,useLocation, useNavigate } from "@remix-run/react"; 
+import { Outlet, Link } from "@remix-run/react";
 
-import {  Layout, Menu } from 'antd';
+import { Layout, Menu } from 'antd';
+
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -16,6 +17,7 @@ import {
 
 const { Header, Content, Footer, Sider } = Layout;
 
+const { SubMenu } = Menu;
 
 export default function AppLayout() {
 
@@ -32,24 +34,32 @@ export default function AppLayout() {
         }}
       >
         <div className="layot-logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<CloudOutlined />}>
-           home
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={['home']}>
+          <Menu.Item key="home" icon={<CloudOutlined />}>
+            <Link to='/home'>home</Link>
           </Menu.Item>
-          <Menu.Item key="2" icon={<BarChartOutlined />}>
-            dashboard
+         
+          <SubMenu key="project" icon={<ShopOutlined />} title="项目管理">
+            <Menu.Item key="plan">
+             <Link to='/project/plan/list'>计划</Link>
+            </Menu.Item>
+
+            <Menu.Item key="assets">资产</Menu.Item>
+          </SubMenu>
+          <Menu.Item key="" icon={<BarChartOutlined />}>
+            <Link to='/dashboard'>dashboard</Link>
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout" style={{ marginLeft: 200 }}>
         <Header className="site-layout-background" style={{ padding: 0 }} />
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-    
+
           <div className="site-layout-background" style={{ minHeight: '78vh', textAlign: 'center' }}>
             <Outlet />
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>杭州决对科技 ©2022 Created by kang.ding</Footer>
+        <Footer style={{ textAlign: 'center' }}>杭州决对科技 ©2022 Created by kang ding</Footer>
       </Layout>
     </Layout>
   )
