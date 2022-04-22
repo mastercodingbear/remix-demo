@@ -2,7 +2,7 @@
 
 antd + Remix demo
 
-[](https://cdn.nlark.com/yuque/0/2022/png/94658/1650623905590-dc1d61d0-9c01-4683-8045-b1ba96b3db6d.png)
+![demo](https://cdn.nlark.com/yuque/0/2022/png/94658/1650623905590-dc1d61d0-9c01-4683-8045-b1ba96b3db6d.png)
 
 - [Remix docs](https://remix.run/docs)
 
