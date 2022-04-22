@@ -1,25 +1,64 @@
 
 
-import { Outlet, Link } from "@remix-run/react";
-
+import { Outlet, Link, useLocation } from "@remix-run/react";
 import { Layout, Menu } from 'antd';
-
-import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  ShopOutlined,
-  TeamOutlined,
-  UserOutlined,
-
-  VideoCameraOutlined,
-} from '@ant-design/icons';
+import type { MenuItem } from '~/const/menuConfig';
+import menuData from '~/const/menuConfig';
+import { urlToList } from '~/utils';
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const { SubMenu } = Menu;
 
 export default function AppLayout() {
+  const location = useLocation();
+  const currnetMenuKeys = urlToList(location.pathname);
+  console.log(currnetMenuKeys)
+  /**
+ * get SubMenu or Item
+ */
+  const getSubMenuOrItem = (item: MenuItem) => {
+    if (item.children && item.children.some(child => child.name)) {
+      const childrenItems = getNavMenuItems(item.children);
+      // 当无子菜单时就不展示菜单
+      if (childrenItems?.length > 0) {
+        return (
+          <SubMenu
+            title={item.name}
+            key={item.path}
+            icon={item.icon}
+          >
+            {childrenItems}
+          </SubMenu>
+        );
+      }
+      return null;
+    } else {
+      return (
+        <Menu.Item key={item.path}>
+          <Link to={item.path} >
+            {item.icon}
+            <span>{item.name}</span>
+          </Link>
+        </Menu.Item>
+      );
+    }
+  };
+
+  /**
+   * 获得菜单子节点
+   * @memberof SiderMenu
+   */
+  const getNavMenuItems = (menusData: MenuItem[]) => {
+ 
+    return menusData
+      .filter(item => item.name && !item.hideInMenu)
+      .map(item => {
+        // make dom
+        return getSubMenuOrItem(item);
+      })
+      .filter(item => item);
+  };
 
   return (
     <Layout hasSider>
@@ -33,26 +72,19 @@ export default function AppLayout() {
           bottom: 0,
         }}
       >
-        <div className="layot-logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['home']}>
-          <Menu.Item key="home" icon={<CloudOutlined />}>
-            <Link to='/home'>home</Link>
-          </Menu.Item>
-         
-          <SubMenu key="project" icon={<ShopOutlined />} title="项目管理">
-            <Menu.Item key="plan">
-             <Link to='/project/plan/list'>计划</Link>
-            </Menu.Item>
-
-            <Menu.Item key="assets">资产</Menu.Item>
-          </SubMenu>
-          <Menu.Item key="" icon={<BarChartOutlined />}>
-            <Link to='/dashboard'>dashboard</Link>
-          </Menu.Item>
+        <div className="layout-logo" />
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={currnetMenuKeys} defaultOpenKeys={currnetMenuKeys}>
+          {getNavMenuItems(menuData)}
         </Menu>
+
       </Sider>
       <Layout className="site-layout" style={{ marginLeft: 200 }}>
-        <Header className="site-layout-background" style={{ padding: 0 }} />
+        <Header className="site-layout-background" style={{ padding: 0 }} >
+          <div className="header-left"></div>
+          <div className="header-right">
+            <Link to='/login'>登录</Link>
+          </div>
+        </Header>
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
 
           <div className="site-layout-background" style={{ minHeight: '78vh', textAlign: 'center' }}>
@@ -64,3 +96,4 @@ export default function AppLayout() {
     </Layout>
   )
 }
+
