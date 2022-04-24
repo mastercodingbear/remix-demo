@@ -1,5 +1,5 @@
 import { LoaderFunction } from '@remix-run/node';
-import { useLoaderData } from "@remix-run/react";
+// import { useLoaderData } from "@remix-run/react";
 import { useEffect } from 'react';
 
 // https://github.com/remix-run/remix/discussions/1494
